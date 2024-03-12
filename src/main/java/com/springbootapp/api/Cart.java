@@ -64,13 +64,6 @@ public class Cart{
         products.clear();
     }
 
-    public int getTotalPrice() {
-        int total = 0;
-        for (Product product : products) {
-            total += product.getPrice();
-        }
-        return total;
-    }
 
     @Override
     public String toString() {

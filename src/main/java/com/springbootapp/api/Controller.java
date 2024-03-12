@@ -1,5 +1,6 @@
 package com.springbootapp.api;
 
+import com.sun.jdi.ArrayReference;
 import org.apache.coyote.Request;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -32,15 +33,6 @@ public class Controller {
         return new ArrayList<>(Arrays.asList(Objects.requireNonNull(rt.getForObject(url, Cart[].class))));
     }
 
-    // delete a cart
-    @GetMapping(value = "/deleteCart")
-    public Cart deleteCart() {
-        String url = "https://fakestoreapi.com/carts/6";
-        RestTemplate rt = new RestTemplate();
-        rt.delete(url);
-        return rt.getForObject(url, Cart.class);
-    }
-
     @GetMapping(value = "/getCartByUser/{id}")
     public ArrayList<Cart> getCartByUser(@PathVariable String id) {
         String url = "https://fakestoreapi.com/carts/user/" + id;
@@ -48,8 +40,6 @@ public class Controller {
         return new ArrayList<>(Arrays.asList(Objects.requireNonNull(rt.getForObject(url, Cart[].class))));
     }
 
-
-    // create a post endpoint to add a new cart with the information given by the user
     @PostMapping(value = "/createCart")
     public Cart createCart(@RequestBody Cart cart) {
         String url = "https://fakestoreapi.com/carts";
@@ -57,8 +47,20 @@ public class Controller {
         return rt.postForObject(url, cart, Cart.class);
     }
 
+    @DeleteMapping(value = "/deleteCart/{id}")
+    public Cart deleteCart(@PathVariable String id) {
+        String url = "https://fakestoreapi.com/carts/" +id;
+        RestTemplate rt = new RestTemplate();
+        rt.delete(url);
+        return rt.getForObject(url, Cart.class);
+    }
 
-
+    @PutMapping(value = "/updateCart/{id}")
+    public void updateCart(@PathVariable String id, @RequestBody Cart cart) {
+        String url = "https://fakestoreapi.com/carts/" + id;
+        RestTemplate rt = new RestTemplate();
+        rt.put(url, cart.toString());
+    }
 
 
 }
